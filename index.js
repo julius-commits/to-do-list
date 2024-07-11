@@ -1,6 +1,6 @@
 var tasks = [];
 var count = 0;
-
+var deleteId = null;
 var addBtn = document.getElementById("addTaskButton");
 addBtn.addEventListener("click", () => {
   var userInput = document.getElementById("taskInput");
@@ -41,6 +41,7 @@ function showTasks() {
     icons.appendChild(editIcon);
 
     trashIcon.addEventListener("click", () => {
+      deleteId = item.id;
       const trashModal = new bootstrap.Modal(
         document.getElementById("exampleModal-delete")
       );
@@ -59,8 +60,17 @@ function showTasks() {
 
 const deletebtn = document.getElementById("confirmDeleteButton");
 deletebtn.addEventListener("click", () => {
+  deleteTask(deleteId);
+  deleteId = null;
   var trashModal = bootstrap.Modal.getInstance(
     document.getElementById("exampleModal-delete")
   );
   trashModal.hide();
 });
+
+function deleteTask(deleteId) {
+  deleteId = Number(deleteId);
+  tasks = tasks.filter((task) => task.id !== deleteId);
+  console.log(tasks, deleteId);
+  showTasks();
+}
